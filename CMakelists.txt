@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.20)
+project(code_editor CXX)
+
+file(GLOB SOURCES src/*)
+
+add_executable(
+    code_editor
+    ${SOURCES}
+)
+
+target_include_directories(code_editor PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/SDL3/include/)
+if (WIN32)
+    if (MSVC)
+        target_link_libraries(code_editor PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/SDL3/build/debug/SDL3.lib)
+    else ()
+        target_link_libraries(code_editor PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/SDL3/build/libSDL3.dll.a)
+    endif ()
+elseif (UNIX)
+    target_link_libraries(code_editor PRIVATE ${CMAKE_SOURCE_DIR}/thirdparty/SDL3/build/libSDL3.so)
+endif ()
+
+message(STATUS "Compiler used: ${CMAKE_CXX_COMPILER}")
